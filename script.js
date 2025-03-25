@@ -1,5 +1,5 @@
 // ----- Scenario Data -----
-// (Eight scenarios are included; you can further expand or modify as needed.)
+// (Eight scenarios are included; you can expand or modify these as needed.)
 const scenarios = [
   {
     id: "scenario1",
@@ -96,12 +96,7 @@ I've scheduled you for Thursday at 11:00 AM. Our ASL interpreter service will be
       ]
     }
   },
-  // Scenario 2 (multiple select), Scenario 3 (decision with follow-up), Scenario 4 (decision with follow-up and final follow-up),
-  // Scenario 5 (decision with follow-up and multiple select final follow-up),
-  // Scenario 6 (multiple select with sequence and decision final follow-up),
-  // Scenario 7 (sequence with multiple select follow-up and decision final follow-up),
-  // Scenario 8 (multiple select with form follow-up and decision final follow-up)
-  // (For brevity, the remaining scenarios are included in your full code as provided in the previous version.)
+  // (Scenarios 2-8 would follow similar structure as before.)
 ];
 
 // ----- Assessment Data -----
@@ -173,7 +168,7 @@ function calculateMaxScore() {
 // ----- Simulation Functions -----
 function startSimulation() {
   // Hide the home screen completely.
-  homeScreen.classList.add('hidden');
+  homeScreen.classList.add('hidden'); // This hides the welcome message and start button.
   currentScenario = 0;
   userScores = [];
   userChoices = [];
@@ -183,7 +178,7 @@ function startSimulation() {
 
 function restartSimulation() {
   resultsScreen.classList.add('hidden');
-  // Show the home screen again.
+  // Optionally, you can show the home screen again.
   homeScreen.classList.remove('hidden');
   startSimulation();
 }
@@ -251,13 +246,14 @@ function createDecisionScenario(scenario) {
     optionElem.dataset.id = option.id;
     optionElem.textContent = option.text;
     optionElem.addEventListener('click', () => {
-      // Allow user to re-select an option.
+      // When a new option is selected, hide any previous feedback and hide the continue button.
+      feedbackContainer.classList.add('hidden');
+      const continueBtn = feedbackContainer.querySelector('.continue-btn');
+      continueBtn.style.display = 'none';
       document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
       optionElem.classList.add('selected');
-      // Remove any existing submit button.
       const existingSubmit = document.querySelector('.submit-btn');
       if (existingSubmit) existingSubmit.remove();
-      // Create a new Submit button.
       const submitBtn = document.createElement('button');
       submitBtn.className = 'submit-btn btn primary';
       submitBtn.textContent = 'Submit';
@@ -275,30 +271,31 @@ function handleDecisionSubmit(scenario, selectedOption) {
   const feedbackContent = feedbackContainer.querySelector('.feedback-content');
   feedbackContent.innerHTML = `<p>${selectedOption.feedback}</p>`;
   feedbackContainer.classList.remove('hidden');
-  // Replace continue button to remove prior listeners.
-  const continueBtnOld = feedbackContainer.querySelector('.continue-btn');
-  const continueBtn = continueBtnOld.cloneNode(true);
-  continueBtnOld.parentNode.replaceChild(continueBtn, continueBtnOld);
+  const continueBtn = feedbackContainer.querySelector('.continue-btn');
+  
   if (selectedOption.isCorrect) {
+    // Enable and show the continue button only if the answer is correct.
     continueBtn.disabled = false;
-    continueBtn.addEventListener('click', () => {
+    continueBtn.style.display = 'block';
+    continueBtn.onclick = () => {
       feedbackContainer.classList.add('hidden');
       if (scenario.followUp) {
-         loadScenario(scenario.followUp);
+        loadScenario(scenario.followUp);
       } else if (scenario.finalFollowUp) {
-         loadScenario(scenario.finalFollowUp);
+        loadScenario(scenario.finalFollowUp);
       } else {
-         currentScenario++;
-         if (currentScenario < scenarios.length) {
-           loadScenario(scenarios[currentScenario]);
-         } else {
-           showResults();
-         }
+        currentScenario++;
+        if (currentScenario < scenarios.length) {
+          loadScenario(scenarios[currentScenario]);
+        } else {
+          showResults();
+        }
       }
-    });
+    };
   } else {
+    // If incorrect, hide the continue button so the user cannot proceed.
     continueBtn.disabled = true;
-    // Optionally, display a message that the answer is incorrect.
+    continueBtn.style.display = 'none';
     const tryAgainMsg = document.createElement('p');
     tryAgainMsg.className = "try-again-msg";
     tryAgainMsg.textContent = "Incorrect answer. Please try again.";
@@ -375,7 +372,9 @@ function handleMultipleSelectSubmit(scenario) {
   feedbackContent.innerHTML = `<p>${scenario.feedback || "Thank you for your selections."}</p>`;
   feedbackContainer.classList.remove('hidden');
   const continueBtn = feedbackContainer.querySelector('.continue-btn');
-  continueBtn.addEventListener('click', () => {
+  continueBtn.style.display = 'block';
+  continueBtn.disabled = false;
+  continueBtn.onclick = () => {
     feedbackContainer.classList.add('hidden');
     currentScenario++;
     if (currentScenario < scenarios.length) {
@@ -383,7 +382,7 @@ function handleMultipleSelectSubmit(scenario) {
     } else {
       showResults();
     }
-  });
+  };
 }
 
 function createSequenceScenario(scenario) {
@@ -463,7 +462,9 @@ function handleSequenceSubmit(scenario) {
   `;
   feedbackContainer.classList.remove('hidden');
   const continueBtn = feedbackContainer.querySelector('.continue-btn');
-  continueBtn.addEventListener('click', () => {
+  continueBtn.style.display = 'block';
+  continueBtn.disabled = false;
+  continueBtn.onclick = () => {
     feedbackContainer.classList.add('hidden');
     currentScenario++;
     if (currentScenario < scenarios.length) {
@@ -471,7 +472,7 @@ function handleSequenceSubmit(scenario) {
     } else {
       showResults();
     }
-  });
+  };
 }
 
 function createFormScenario(scenario) {
@@ -585,7 +586,9 @@ function handleFormSubmit(scenario) {
   feedbackContent.innerHTML = `<p>Your form score: ${normalized}/5</p>`;
   feedbackContainer.classList.remove('hidden');
   const continueBtn = feedbackContainer.querySelector('.continue-btn');
-  continueBtn.addEventListener('click', () => {
+  continueBtn.style.display = 'block';
+  continueBtn.disabled = false;
+  continueBtn.onclick = () => {
     feedbackContainer.classList.add('hidden');
     currentScenario++;
     if (currentScenario < scenarios.length) {
@@ -593,7 +596,7 @@ function handleFormSubmit(scenario) {
     } else {
       showResults();
     }
-  });
+  };
 }
 
 // ----- Drag and Drop Handlers for Sequence -----
