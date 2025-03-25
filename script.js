@@ -1,6 +1,4 @@
 // ----- Scenario Data -----
-// Here we include eight scenarios. (For brevity, scenarios 1 and 2 are fully detailed;
-// scenarios 3–8 are based on your provided sample structures.)
 const scenarios = [
   {
     id: "scenario1",
@@ -331,7 +329,7 @@ I've scheduled you for Thursday at 11:00 AM. Our ASL interpreter service will be
       {
         id: "5b",
         text: "Sit directly across from Sandra, make eye contact, and introduce yourself while the interpreter translates.",
-        feedback: "Good, but the direct triangular arrangement would be better.",
+        feedback: "Good, but a triangular arrangement would be better.",
         isCorrect: false,
         responseContent: { type: "dialog", content: "You: 'Hello Sandra, I'm Dr. Martinez. Let's discuss your migraines while the interpreter assists.'" },
         score: 3
@@ -482,7 +480,7 @@ I've scheduled you for Thursday at 11:00 AM. Our ASL interpreter service will be
         { id: "7j", text: "Use simple gestures pointing to the medication.", feedback: "Good approach.", isCorrect: true, score: 1 },
         { id: "7k", text: "Maintain eye contact and give reassuring nods.", feedback: "Excellent.", isCorrect: true, score: 1 },
         { id: "7l", text: "Wait until epinephrine takes effect before communicating.", feedback: "Delays necessary communication.", isCorrect: false, score: 0 },
-        { id: "7m", text: "Ask a colleague to handle communication.", feedback: "Exclude Sandra from communication.", isCorrect: false, score: 0 }
+        { id: "7m", text: "Ask a colleague to handle communication.", feedback: "Excludes Sandra from communication.", isCorrect: false, score: 0 }
       ]
     },
     finalFollowUp: {
@@ -606,9 +604,8 @@ function calculateMaxScore() {
         scenario.finalFollowUp.options.forEach(option => { if(option.isCorrect) maxScore += option.score; });
       }
     } else if (scenario.type === 'sequence') {
-      maxScore += 5; // fixed score for correct sequence
+      maxScore += 5; // fixed score for sequence
     }
-    // Add other types as needed.
   });
   return maxScore;
 }
@@ -696,7 +693,7 @@ function createDecisionScenario(scenario) {
       const existingSubmit = document.querySelector('.submit-btn');
       if (existingSubmit) existingSubmit.remove();
       const submitBtn = document.createElement('button');
-      submitBtn.className = 'submit-btn btn';
+      submitBtn.className = 'submit-btn btn primary';
       submitBtn.textContent = 'Submit';
       submitBtn.addEventListener('click', () => handleDecisionSubmit(scenario, option));
       optionsContainer.parentElement.appendChild(submitBtn);
@@ -742,7 +739,6 @@ function createMultipleSelectScenario(scenario) {
   }
   const visualContainer = template.querySelector('.visual-elements');
   if (scenario.visualElements) {
-    // For simplicity, add description text
     const desc = document.createElement('div');
     desc.className = 'scene-description';
     desc.textContent = scenario.visualElements.description;
@@ -832,7 +828,6 @@ function createSequenceScenario(scenario) {
   }
   template.querySelector('.sequence-question').textContent = scenario.taskDescription;
   const unorderedOptions = template.querySelector('.unordered-options');
-  // Shuffle items
   const shuffledItems = [...scenario.items].sort(() => Math.random() - 0.5);
   shuffledItems.forEach(item => {
     const seqItem = document.createElement('div');
@@ -900,7 +895,6 @@ function handleSequenceSubmit(scenario) {
   });
 }
 
-// (Setup Task and Form scenarios would follow a similar pattern.)
 function createFormScenario(scenario) {
   const template = formTemplate.content.cloneNode(true);
   template.querySelector('.scenario-title').textContent = scenario.title;
@@ -965,7 +959,7 @@ function createFormScenario(scenario) {
   let submitBtn = formContainer.querySelector('.submit-form');
   if (!submitBtn) {
     submitBtn = document.createElement('button');
-    submitBtn.className = 'submit-form btn';
+    submitBtn.className = 'submit-form btn primary';
     submitBtn.textContent = 'Submit Form';
     formContainer.appendChild(submitBtn);
   }
@@ -1005,7 +999,7 @@ function handleFormSubmit(scenario) {
       total += field.correctAnswers.length;
     }
   });
-  const normalized = Math.round((score/total)*5);
+  const normalized = Math.round((score / total) * 5);
   userScores.push(normalized);
   userChoices.push({ scenarioId: scenario.id, formScore: normalized });
   const feedbackContent = feedbackContainer.querySelector('.feedback-content');
@@ -1093,5 +1087,5 @@ function showResults() {
 
 // ----- DOMContentLoaded -----
 document.addEventListener('DOMContentLoaded', () => {
-  // All event listeners and functions have been set up above.
+  // All event listeners and functions are now set up.
 });
