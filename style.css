@@ -1,0 +1,102 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  margin: 0;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  color: #333;
+}
+
+#home-screen, #scenario-container, #results-screen {
+  max-width: 800px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.hidden {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+button.btn {
+  background: #e7e7e7;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  margin: 10px 5px 0 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button.btn:hover {
+  background: #d7d7d7;
+}
+
+pre.system-info {
+  background: #eee;
+  padding: 10px;
+  white-space: pre-wrap;
+}
+
+.dialog-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+  background: #fafafa;
+}
+
+.dialog-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.scene-image img,
+.device-interface {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+.option, .checkbox-option, .sequence-item, .setup-option {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 5px 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.option.selected, .checkbox-option input:checked + label {
+  background: #d7eaff;
+}
+
+.correct {
+  border-color: green;
+  background: #e0ffe0;
+}
+
+.incorrect {
+  border-color: red;
+  background: #ffe0e0;
+}
+
+/* Score bar in results */
+.score-bar {
+  width: 100%;
+  background: #ddd;
+  border-radius: 4px;
+  margin: 5px 0;
+}
+.score-fill {
+  height: 20px;
+  background: #4caf50;
+  width: 0;
+  border-radius: 4px;
+}
