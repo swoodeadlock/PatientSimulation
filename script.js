@@ -1,5 +1,5 @@
 // ----- Scenario Data -----
-// (Eight scenarios are included; you can expand or modify these as needed.)
+// (Ensure your array includes all eight (or more) scenario objects.)
 const scenarios = [
   {
     id: "scenario1",
@@ -96,7 +96,7 @@ I've scheduled you for Thursday at 11:00 AM. Our ASL interpreter service will be
       ]
     }
   },
-  // (Scenarios 2-8 would follow similar structure as before.)
+  // ... (Add your scenarios 2 through 8 here) ...
 ];
 
 // ----- Assessment Data -----
@@ -168,7 +168,7 @@ function calculateMaxScore() {
 // ----- Simulation Functions -----
 function startSimulation() {
   // Hide the home screen completely.
-  homeScreen.classList.add('hidden'); // This hides the welcome message and start button.
+  homeScreen.style.display = "none";
   currentScenario = 0;
   userScores = [];
   userChoices = [];
@@ -178,8 +178,7 @@ function startSimulation() {
 
 function restartSimulation() {
   resultsScreen.classList.add('hidden');
-  // Optionally, you can show the home screen again.
-  homeScreen.classList.remove('hidden');
+  homeScreen.style.display = "block";
   startSimulation();
 }
 
@@ -246,7 +245,7 @@ function createDecisionScenario(scenario) {
     optionElem.dataset.id = option.id;
     optionElem.textContent = option.text;
     optionElem.addEventListener('click', () => {
-      // When a new option is selected, hide any previous feedback and hide the continue button.
+      // Clear previous feedback and hide continue button.
       feedbackContainer.classList.add('hidden');
       const continueBtn = feedbackContainer.querySelector('.continue-btn');
       continueBtn.style.display = 'none';
@@ -274,26 +273,24 @@ function handleDecisionSubmit(scenario, selectedOption) {
   const continueBtn = feedbackContainer.querySelector('.continue-btn');
   
   if (selectedOption.isCorrect) {
-    // Enable and show the continue button only if the answer is correct.
     continueBtn.disabled = false;
     continueBtn.style.display = 'block';
     continueBtn.onclick = () => {
       feedbackContainer.classList.add('hidden');
       if (scenario.followUp) {
-        loadScenario(scenario.followUp);
+         loadScenario(scenario.followUp);
       } else if (scenario.finalFollowUp) {
-        loadScenario(scenario.finalFollowUp);
+         loadScenario(scenario.finalFollowUp);
       } else {
-        currentScenario++;
-        if (currentScenario < scenarios.length) {
-          loadScenario(scenarios[currentScenario]);
-        } else {
-          showResults();
-        }
+         currentScenario++;
+         if (currentScenario < scenarios.length) {
+           loadScenario(scenarios[currentScenario]);
+         } else {
+           showResults();
+         }
       }
     };
   } else {
-    // If incorrect, hide the continue button so the user cannot proceed.
     continueBtn.disabled = true;
     continueBtn.style.display = 'none';
     const tryAgainMsg = document.createElement('p');
